@@ -1,0 +1,27 @@
+table{
+    font-size : 18px;
+    width: 85%;
+    border-collapse: collapse;
+}
+table,th,td{
+    border: 1px solid grey;
+    padding: 10px;
+    text-align: center;
+    }
+th{
+background-color : #f8ffff;
+    font-weight: bold;
+    }
+h2,p{
+    text-align :center;
+    font-weight: bold;
+}
+
+.btn{
+    background-color: #ff8868;
+    width:15%;
+    font-size: 18px;
+    font-weight: bold;
+    height:auto;
+    text-align:center;
+        }

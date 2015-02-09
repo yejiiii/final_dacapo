@@ -1,0 +1,22 @@
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <a class="navbar-brand" id="link3">Reservation</a>
+    </div>
+    <div class="container-fluid">
+        <div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{url_for('information')}}"><span class="glyphicon glyphicon-home" id="icon_color"></span>&nbsp;이용안내</a></li>
+              {% if session['user_id'] %}
+                <li><a href="{{url_for('logout_process')}}"><span class="glyphicon glyphicon-off" id="icon_color"></span>&nbsp;로그아웃</a></li>
+
+                {% else %}
+                <li><a href="{{url_for('login')}}"><span class="glyphicon glyphicon-off" id="icon_color"></span>&nbsp;로그인</a></li>
+
+              {% endif %}
+
+                <li><a href="{{url_for('selectlist')}}">
+                    <span class="glyphicon glyphicon-book" id="icon_color"></span>&nbsp;예약확인/예약취소&nbsp;</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

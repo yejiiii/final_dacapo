@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+
+{% endblock %}
+
+{% block content %}
+<style>
+    .btn{
+        background-color: #ff8868;
+            position: relative;
+            font-size: 18px;
+            font-weight: bold;
+            height:auto;
+            text-align:center;
+        }
+    .message{
+        text-align: center;
+        font-size: 20px;
+    }
+</style>
+<span style="line-height: 200px"><br></span>
+<div class="message">
+    <p>회원가입이 완료되었습니다.</p>
+    <p>입력하신 이메일에 인증메일이 전송되었습니다.</p>
+    <p>이메일에서 본인인증 후 사이트 사용이 가능하니, 인증 완료후 사용하시길 바랍니다.</p>
+</div>
+
+
+<span style="line-height: 100px"><br></span>
+<div class="container" align="center">
+    <button type="button" class="btn btn-danger"><a href="login" style="color: white;">로그인하기</a></button>
+</div>
+<span style="line-height: 100px"><br></span>
+
+{% endblock %}

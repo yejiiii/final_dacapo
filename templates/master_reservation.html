@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='master.css')}}">
+{% extends "base_master.html" %}
+
+{% block title %} Example for registration with handling databse {% endblock %}
+
+{% block optional_javascript %}
+
+{% endblock %}
+
+{% block content %}
+
+<span style="line-height: 50px"><br></span>
+<table class="master-table" align="center">
+    <tr>
+        <th>강의실</th>
+        <th>예약자ID</th>
+        <th>예약자</th>
+        <th>예약날짜</th>
+        <th>예약시간</th>
+        <th>동반사용자</th>
+        <th>사용목적</th>
+        <th>승인확인/승인취소</th>
+        <th>취소이유</th>
+    </tr>
+    <tr>
+        <td>519호</td>
+        <td>201433298</td>
+        <td>이현주</td>
+        <td>2015-03-03 Mon</td>
+        <td>13:00-15:00</td>
+        <td>201433272 서예지<br>201433289 홍길동</td>
+        <td>프로그래밍 입문 수업 발표 회의</td>
+        <td>
+            <div class="container" style="width: auto">
+              <form role="form">
+                <div class="form-group" style="padding-top:25px"align="center">
+                    <select class="form-control" id="sel1" style="width: auto">
+                        <option>선택해주세요</option>
+                        <option>승인확인</option>
+                        <option>승인취소</option>
+                    </select>
+                    <br>
+                </div>
+              </form>
+            </div>
+        </td>
+        <td><input type="text" style="width: auto"></td>
+    </tr>
+    <tr>
+        <td>504호</td>
+        <td>201433272</td>
+        <td>서예지</td>
+        <td>2015-03-04 Wed</td>
+        <td>15:00-17:00</td>
+        <td></td>
+        <td></td>
+        <td>
+            <div class="container" style="width: auto">
+                <form role="form">
+                    <div class="form-group" style="padding-top:25px"align="center">
+                        <select class="form-control" id="sel1" style="width: auto">
+                            <option>선택해주세요</option>
+                            <option>승인확인</option>
+                            <option>승인취소</option>
+                        </select>
+                        <br>
+                    </div>
+                </form>
+            </div>
+        </td>
+        <td><input type="text" style="width: auto"></td>
+    </tr>
+</table>
+
+<span style="line-height: 300px"><br></span>
+<div class="container" align="center">
+    <button type="button" class="btn btn-danger" onclick="self.close()">확인</button>
+</div>
+
+{% endblock %}

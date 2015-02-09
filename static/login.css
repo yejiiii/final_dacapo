@@ -1,0 +1,68 @@
+.divider{
+    width: 50px;
+    height: auto;
+    display: inline-block;}
+#link3{
+    color: white;
+}
+#icon_color{
+    color: orange;
+}
+#userid{
+    width:520px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid deepskyblue;
+}
+#userpassword {
+    width: 520px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid deepskyblue;
+}
+p{
+    position: relative;
+    text-align: center;
+    font-size: 150%;
+}
+.glyphicon-user{
+    line-height: 100px;
+    font-size: 40px;
+    width: 1em;
+    display: block;
+    left: 90%;
+    color: deepskyblue;
+    margin:auto;
+}
+.checkbox{
+    left:40%;
+}
+#middle{
+    padding-top: 10px ;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #e7e7e7;
+    display: inline-block;
+    margin-left: px;
+    border-radius: 15px;
+}
+#middle.hr {
+    border: none;
+    height: 1.5px;
+    color: white;
+    background: white; }
+
+.btn{
+    background-color: #ff8868;
+    width:13%;
+    font-size: 18px;
+    font-weight: bold;
+    height:auto;
+    text-align:center;
+    }
+.col-md-6{
+    background: #f4f4f4;
+    border-radius: 20px;
+    border: 1px solid deepskyblue;
+}

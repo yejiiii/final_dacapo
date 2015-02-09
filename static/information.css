@@ -1,0 +1,12 @@
+h3{
+    margin-top: 0;
+    padding: 5px;
+    background-color: #ececfc;
+}
+.jumbotron{
+    margin-top:100px;
+}
+article{
+    position:static;
+    vertical-align:middle;
+}

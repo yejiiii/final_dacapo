@@ -1,0 +1,105 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}">
+{% extends "base.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+<script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').focus()})
+        function page_back(){
+            history.go(-1)();}
+    </script>
+{% endblock %}
+
+{% block content %}
+<form class="form-signin" method="post" action="check_login">
+    <span style="line-height: 80px"><br></span>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <span style="line-height: 50px"><br></span>
+        <div id="main">
+            <span class="glyphicon glyphicon-user" ></span>
+            <hr>
+            <div class="form-group">
+                <label for="id">Student ID:</label>
+                <input type="text" class="form-control" id="id" placeholder="Enter ID" name="id">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password">
+            </div>
+
+            <div class="form-group" align="center">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label><input type="checkbox">Remember me</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if error %}
+            <strong>{{ error }}</strong>
+        {% endif %}
+    </div>
+    <div class="col-md-3"></div>
+
+    <div class="row" align="center">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+            <span style="line-height: 50px"><br></span>
+            <button type="button" class="btn btn-danger" value="비밀번호찾기" href="#" data-toggle="modal" data-target="#basicModal" style="color: white;">비밀번호 찾기</button>
+            <div id="stack2" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3>E-mail 전송</h3>
+                </div>
+                <div class="modal-body">
+                    <h3><em style="font-weight: bold">201433298</em>님의<br>
+                        이메일 <span style="font-weight: bold; color: purple">ldxxxxxx@naver.com</span>으로<br>
+                        비밀번호가 전송되었습니다.</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn">OK</button>
+                    <button type="button" class="btn btn-primary">Ok</button>
+                </div>
+            </div>
+            <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> X </button>
+                            <h4 class="modal-title" id="myModalLabel">비밀번호 찾기</h4>
+                        </div>
+                        <div class="modal-body" style="text-align: left">
+                            <div class="container" style="width: 500px">
+                                <div class="form-group" >
+                                    <label for="modalid">Student ID:</label>
+                                    <input type="text" class="form-control" id="modalid" placeholder="Enter ID" name="modalid">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modalemail" >E-mail:</label>
+                                    <input type="email" class="form-control" id="modalemail" placeholder="Enter email" name="modalemail">
+                                </div>
+                                <p style="font-size:13px; color: blue;"> 이메일과 아이디가 일치할 경우, 비밀먼호 찾기를 누르면 비밀번호가 전송됩니다.</p>
+                                {{m_error}}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default " href="checkpassword" style="width:120px; button-align:left;">비밀번호 찾기</button>
+                            <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+            <button type="submit" class="btn btn-danger">로그인</button>
+            <div class="divider"></div>
+            <button type="button" class="btn btn-danger"><a href="register" style="color: white;">회원가입</a></button>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</form>
+<span style="line-height: 70px"><br></span>
+{% endblock %}

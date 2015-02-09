@@ -1,0 +1,141 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='checkinformation.css')}}">
+{% extends "base.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+<script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').focus()})
+        function page_back(){
+            history.go(-1)();}
+</script>
+<style>
+    table{
+    font-size : 18px;
+    width: 85%;
+    border-collapse: collapse;
+}
+table,th,td{
+    border: 1px solid grey;
+    padding: 10px;
+    text-align: center;
+    }
+th{
+background-color : #f8ffff;
+    font-weight: bold;
+    }
+h2,p{
+    text-align :center;
+    font-weight: bold;
+}
+    .divider{
+        width: 300px;
+        height: auto;
+        display: inline-block;
+    }
+.btn{
+    background-color: #ff8868;
+    width:15%;
+    font-size: 18px;
+    font-weight: bold;
+    height:auto;
+    text-align:center;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<span style="line-height: 30px"><br></span>
+<table align="center">
+    <tr>
+        <th>강의실</th>
+        <td>{{ room }}</td>
+    </tr>
+    <tr>
+        <th>예약자학번</th>
+        <td>{{g.user['StudentID']}}</td>
+    </tr>
+    <tr>
+        <th>예약자이름</th>
+        <td>{{g.user['UserName']}}</td>
+    </tr>
+    <tr>
+        <th>동반사용자</th>
+        <td>201433272 서예지<br>201433289 홍길동</td>
+    </tr>
+    <tr>
+        <th>예약시간</th>
+        <td>13:00~15:00</td>
+    </tr>
+    <tr>
+        <th>사용목적</th>
+        <td>프로그램 입문 수업 발표 회의</td>
+    </tr>
+    <tr>
+        <th>승인상황</th>
+        <td>
+            <a href="#" data-toggle="modal" data-target="#basicModal" style="color: red">불 허</a>
+            <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> X </button>
+                            <h4 class="modal-title" id="myModalLabel">승인상황</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table align="center" style="margin-left: 40px">
+                                <tr>
+                                    <th>승인상황</th>
+                                    <td>불 허</td>
+                                </tr>
+                                <tr>
+                                    <th>승인이유</th>
+                                    <td>예약하신 시간에 세미나가 진행됩니다.</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+</table>
+
+<br>
+<span style="line-height: 20px"><br></span>
+<p>승인상황이 불허 인 경우, 취소를 클릭하시면 이유를 확인 할 수 있습니다</p>
+<span style="line-height: 50px"><br></span>
+
+<div class="container" align="center" style=>
+    <button type="button" class="btn btn-danger" onclick="page_back();">예약확인</button>
+    <div class="divider"></div>
+    <button type="button" class="btn btn-danger" href="#" data-toggle="modal" data-target="#TwoModal" style="color: white">예약취소</button>
+    <div class="modal fade" id="TwoModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> X </button>
+                    <h4 class="modal-title" id="myModalLabel">예약취소</h4>
+                </div>
+                <div class="modal-body">
+                    <span style="line-height: 70px"><br></span>
+                    <h2>예약을 취소하시겠습니까?</h2>
+                    <span style="line-height: 70px"><br></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-yes" data-dismiss="modal">YES</button>
+                    <button type="button" class="btn btn-no" data-dismiss="modal">NO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<span style="line-height: 50px"><br></span>
+{% endblock %}

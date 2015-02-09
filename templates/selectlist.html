@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+<style>
+    table{
+        font-size : 16px;
+        width: 80%;
+        border-collapse: collapse;
+    }
+    table,th,td{
+        border: 1px solid grey;
+        text-align: center;
+        height: 20px;
+    }
+    tr{
+        height: 50%;
+    }
+    th{
+        background-color : #f8ffff;
+        font-weight: bold;
+        width: 60px;
+    }
+    .btn{
+        background-color: #ff8868;
+        width:15%;
+        font-size: 18px;
+        font-weight: bold;
+        height:auto;
+        text-align:center;
+        }
+</style>
+<script>
+    function page_move(){
+    location.href="http://naver.com";
+    }
+    function page_back(){
+    history.go(-1)();
+    }
+		</script>
+
+{% endblock %}
+
+{% block content %}
+
+<span style="line-height: 200px"><br></span>
+<table align="center">
+    <tr>
+        <th>강의실</th>
+        <th>예약날짜</th>
+        <th>예약시간</th>
+        <th>상세내역 바로가기</th>
+    </tr>
+    <tr>
+        <td>519호</td>
+        <td>2015-03-03 Mon</td>
+        <td>13:00-15:00</td>
+        <td><p><a href="checkinformation"><span class="glyphicon glyphicon-hand-right"></span></a></p></td>
+    </tr>
+    <tr>
+        <td>504호</td>
+        <td>2015-03-04 Wed</td>
+        <td>15:00-17:00</td>
+        <td><p><a href="#"><span class="glyphicon glyphicon-hand-right"></span></a></p></td>
+    </tr>
+</table>
+
+<span style="line-height: 150px"><br></span>
+<div class="container" align="center">
+    <button type="button" class="btn btn-danger" onclick="page_back();">뒤로 가기</button>
+
+</div>
+
+{% endblock %}

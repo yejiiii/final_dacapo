@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='finish_reservation.css')}}">
+{% extends "base.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+
+{% endblock %}
+
+{% block content %}
+
+<span style="line-height: 20px"><br></span>
+<table class="reservation-table" align="center">
+    <tr>
+        <th>강의실</th>
+        <td>{{ room }}</td>
+    </tr>
+    <tr>
+        <th>예약자학번</th>
+        <td>{{g.user['StudentID']}}</td>
+    </tr>
+    <tr>
+        <th>예약자이름</th>
+        <td>{{g.user['UserName']}}</td>
+    </tr>
+    <tr>
+        <th>동반사용자</th>
+        <td>{{member}}</td>
+    </tr>
+    <tr>
+        <th>예약시간</th>
+        <td>{{time}}</td>
+    </tr>
+    <tr>
+        <th>사용목적</th>
+        <td>{{object}}</td>
+    </tr>
+    <tr>
+        <th>사용승인</th>
+        <td>{{status}}</td>
+    </tr>
+</table>
+<span style="line-height: 40px"><br></span>
+<h3>예약이완료되었습니다</h3>
+<p>강의실을 사용하기 전, 승인확인이 되었는지 확인 한 후 사용해 주시길 바랍니다.</p>
+
+<span style="line-height: 30px"><br></span>
+<div class="container" align="center">
+    <button type="button" class="btn btn-danger"><a href="{{url_for('information')}}" style="color:white">초기화면으로 돌아가기</a></button>
+</div>
+<span style="line-height:50px"><br></span>
+
+
+{% endblock %}

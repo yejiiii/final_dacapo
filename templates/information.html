@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='information.css')}}">
+{% extends "base.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+
+{% endblock %}
+
+{% block content %}
+    <span style="line-height: 100px;"><br></span>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <h3 id="break" style="font-weight: bold">* 이 용 안 내</h3>
+            <alticle>
+            <b>이용 가능 대상</b> : 산업경영공학과 학생<br>
+            <span style="line-height: 10px"><br></span>
+            <b>이용 가능 강의실</b> : 504호 - 개인 과제 및 쉴 공간 <br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(최대 30명 이용 가능, 좌석은 선착순)<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;519호 - 팀 별 프로젝트 (3~8명)<br>
+            <span style="line-height: 10px"><br></span>
+            <b>이용 가능 시간</b> : <strong style="color:red ";>09:00 ~ 18:00 (학기 중 평일만 이용 가능)</strong><br>
+            <span style="line-height: 10px"><br></span>
+            <b>이용 방법</b> : <strong style="color:red ";>하루 한시간 단위로 최대 두시간 예약 가능<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;하루 전까지 예약, 예약한 시간의 한시간 전까지 예약 취소 가능<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;예약은 한 날짜의 한 번만 가능</strong>
+            </alticle>
+        </div>
+        <div class="col-md-5">
+        <h3 id="break" style="font-weight: bold">* 유 의 사 항</h3>
+        <alticle>
+        <strong style="color:red ";>경고 3회</strong> 누적시 평생 사용 불가 <br>
+            <span style="line-height: 10px"><br></span>
+            (경고 예시 : 인원 숫자 불일치, 강의실 더럽게 사용)<br>
+            <span style="line-height: 10px"><br></span>
+            <strong style="color:red ";>교수님께서 519호 사용할 시 교수님 우선 사용, 사용자는 예약 취소될 수 있음.</strong><br>
+            <span style="line-height: 10px"><br></span>
+            다음 사람이 청결한 상태에서 사용할 수 있게 깔끔하게 사용해주세요.<br>
+            <span style="line-height: 10px"><br></span>
+            옆 방은 교수님 방 입니다. 시끄럽지 않게 사용해주세요.<br>
+        </alticle>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+<span style="line-height: 100px;"><br></span>
+<div class="container" align="center">
+    <form action="/timetable_504">
+        <button type="submit" class="btn btn-danger" style="color: white;width:13%;">예 약 시 작</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+
+        #container{
+            margin: auto;
+            width: 85%;
+            height: 70%;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -moz-box-orient: horizontal;
+            -moz-direction: reverse;
+            -webkit-box-direction: horizontal;
+            -webkit-direction: reverse;
+            -ms-flex-direction: row-reverse;
+            -webkit-flex-direction: row-reverse;
+            flex-direction: row-reverse;
+        }
+        #room{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: left;
+            font-size: 18px;
+        }
+        table{
+            font-size : 18px;
+            border-collapse: collapse;
+        }
+        table,th,td{
+            border: 1px solid lavenderblush;
+            padding: 10px;
+            text-align: center;
+        }
+        #main th{
+            background-color : #f8ffff;
+            font-weight: bold;
+            text-align:center;
+        }
+        p{
+            text-align: center;
+        }        .divider{
+            padding:15px;
+            background-color: #FFFFFF;
+        }
+
+        .btn{
+            background-color: #ff8868;
+            width:15%;
+            font-size: 18px;
+            font-weight: bold;
+            height:auto;
+            text-align:center;
+        }

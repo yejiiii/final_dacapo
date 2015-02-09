@@ -1,0 +1,27 @@
+.glyphicon-user{
+    line-height: 100px;
+    font-size: 40px;
+    width: 1em;
+    display: block;
+    left: 90%;
+    color: deepskyblue;
+    margin:auto;
+}
+.soften{
+    border:none;
+    height:1.5px;
+    color:white;
+    background:white;
+}
+.btn{
+    background-color: #ff8868;
+    position: relative;
+    font-size: 18px;
+    font-weight: bold;
+    text-align:center;
+}
+.col-md-6{
+    background: #f4f4f4;
+    border-radius: 20px;
+    border: 1px solid deepskyblue;
+}

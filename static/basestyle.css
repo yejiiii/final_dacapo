@@ -1,0 +1,16 @@
+#icon_color{
+    color:orange;
+}
+#link3{
+    color:white;
+}
+.navbar{
+    background: #e6eaaa;
+    font-size: auto;
+}
+.jumbotron{
+    padding:15px;
+    color: grey;
+    background: #ffffff;
+    margin-bottom: 10px;
+}

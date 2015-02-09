@@ -1,0 +1,19 @@
+h3,p{
+    text-align:center;
+}
+.reservation-table{
+   font-size : 18px;
+   width: 85%;
+   height:20%;
+   border-collapse: collapse;
+}
+ .reservation-table th,td{
+   border: 1px solid grey;
+   padding: 10px;
+   text-align: center;
+}
+.reservation-table th{
+    background-color : #f8ffff;
+    font-weight: bold;
+    text-align:center;
+}

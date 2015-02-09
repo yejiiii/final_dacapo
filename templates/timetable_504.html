@@ -1,0 +1,154 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='timetable.css')}}">
+
+{% extends "base_timetable.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+<script type="text/javascript">
+    {% if data %}
+        jQuery.fn.addHidden = function (name, value) {
+            return this.each(function () {
+                var input = $("<input>").attr("type", "hidden").attr("name", name).val(value);
+                $(this).append($(input));
+            });
+        };
+         var number=0;
+         var remember_thing=[];
+         var time_reservation=[];
+         var class_reservation=[];
+         if ({{g.user['StudentID']}} != '123456789'){
+            $( function() {
+                    $('td').click( function() {
+                        var class_room=$(this).attr('id');
+                        var change=$(this).attr('name');
+                        var remember=$(this).index();
+                        if (number<2){
+                            if($(this).attr('style')){
+                                removeItem(time_reservation, change);
+                                removeItem(class_reservation,class_room);
+                                number=number-1;
+                                $(this).removeAttr('style');
+                            }
+                            else{
+                                $(this).css('background', 'red');
+                                remember_thing.push(remember);
+                                number=number+1;
+                                time_reservation.push(change);
+                                class_reservation.push(class_room);
+                            }
+                        }
+                        else{
+                            if($(this).attr('style')){
+                                number=number-1;
+                                $(this).removeAttr('style');
+                                removeItem(remember_thing, remember);
+                                function removeItem(remember_thing,remember){
+                                    for(var i in remember_thing){
+                                        if(remember_thing[i]==remember){
+                                            remember_thing.splice(i,1);
+                                        }
+                                    }
+                                }
+                                removeItem(class_reservation, class_room);
+                                removeItem(time_reservation, change);
+                            }
+                            else{
+                                $('td').removeAttr('style');
+                                number=0;
+                                time_reservation=[];
+                                class_reservation=[];
+                                remember_thing=[];
+                            }
+                        }
+                    });
+            });
+         }
+         else{
+            $( function() {
+                    $('td').click( function() {
+                        var class_room=$(this).attr('id');
+                        var change=$(this).attr('name');
+                        var remember=$(this).index();
+                        if($(this).attr('style')){
+                            removeItem(time_reservation, change);
+                            removeItem(class_reservation,class_room);
+                            $(this).removeAttr('style');
+                        }
+                        else{
+                            $(this).css('background', 'black');
+                            remember_thing.push(remember);
+                            time_reservation.push(change);
+                            class_reservation.push(class_room);
+                        }
+                    });
+            });
+         }
+    {% endif %}
+    $( document ).ready(function() {
+        $('#submit_button').click( function() {
+            if ({{g.user['StudentID']}} != '123456789'){
+            if (remember_thing.length>=2){
+                if (remember_thing[0] != remember_thing[1]){
+                    alert("하루에 한 요일만 예약가능합니다");
+                    remember_thing=[];
+                    return;
+                }
+            }
+            }
+            for (var i = 0; i<time_reservation.length; i++){
+                $("#submit_time_table").addHidden('time'+i,time_reservation[i]);
+            }
+            for (var i = 0; i<class_reservation.length; i++){
+                $("#submit_time_table").addHidden('room'+i,class_reservation[i]);
+            }
+            $("#submit_time_table").submit();
+        }
+        );
+    }
+ );
+</script>
+
+<style type="text/css">
+    .main td,th{
+    text-align: center;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="col-md-1"></div>
+    <div class="col-md-12">
+        <table class ="table table-bordered " id="main">
+            <tr>
+                <th>504호</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+            </tr>
+
+            {% for i in range(14)%}
+            <tr>
+                <th>{{Start_time[i]}}~{{End_time[i]}}</th>
+                {% for j in range(5) %}
+                <td col id={{counter[i][j]}} name={{i}}>{{counter[i][j]}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+<form action="/student_member" method="GET" id="submit_time_table">
+    <div class="container" align="center">
+        <button type="button" class="btn btn-danger" id="submit_button">예약완료</a></button>
+    </div>
+</form>
+{% endblock %}
