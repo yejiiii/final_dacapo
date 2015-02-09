@@ -12,8 +12,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -246,7 +246,7 @@ def finish_reservation():
     reservationmember = query_db('''select * from ReservationMember where LeaderNumber = %s''', [id], one=True)
     time= reservation['Time']
     object = reservation['Object']
-    member = reservationmember['MemberName']
+    #member = reservationmember['MemberName']
     room=reservation['RoomNumber']
     status=reservation['Status']
 
