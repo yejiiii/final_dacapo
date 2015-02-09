@@ -12,8 +12,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -327,6 +327,7 @@ def member():
 @app.route('/input_member', methods=['GET'])
 def input_member():
     data = request.args.get('term', '')
+    print data
     json_data = query_db('''select * from Students WHERE StudentID like %s ''', [data+"%"])
 
     return Response(json.dumps(json_data),mimetype='application/json')

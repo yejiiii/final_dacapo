@@ -11,7 +11,14 @@
         <div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="6_Information.html"><span class="glyphicon glyphicon-home" id="icon_color"></span>&nbsp;이용안내</a></li>
-                <li><a href="3_Login.html"><span class="glyphicon glyphicon-off" id="icon_color"></span>&nbsp;로그인</a></li>
+               {% if session['user_id'] %}
+                <li><a href="{{url_for('logout_process')}}"><span class="glyphicon glyphicon-off" id="icon_color"></span>&nbsp;로그아웃</a></li>
+
+                {% else %}
+                <li><a href="{{url_for('login')}}"><span class="glyphicon glyphicon-off" id="icon_color"></span>&nbsp;로그인</a></li>
+
+                 {% endif %}
+
                 <li><a href="selectinformation">
                     <span class="glyphicon glyphicon-book" id="icon_color"></span>&nbsp;예약확인/예약취소&nbsp;</a></li>
             </ul>
