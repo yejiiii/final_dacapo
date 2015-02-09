@@ -13,6 +13,15 @@
         x = 0;
         $(document).ready(function()
         {
+            $("#member_submit").click(function(){
+               $("#member_list option").each(function()
+                {
+                    $(this).attr("selected","selected");
+                });
+                $("#member_form").submit();
+            });
+
+
             $("div").scroll(function(){
                 $("span").text( x+= 1);
             });
@@ -42,7 +51,7 @@
                 minLength: 3,
                 select: function (event, ui)
                 {
-                    var data = "<option value="+ui.item.studentID+">"+ui.item.label+"</option>"
+                    var data = "<option value='"+ui.item.studentID+"'>"+ui.item.label+"</option>"
                     $('#member_list').append(data);
                     $("#btn2").click(function(){
                         $("#member_list").find('option:selected').remove();
@@ -99,7 +108,7 @@
             <tr style="margin:30px;">
                 <th style="height:100px;"> append : </th>
                 <td>
-                    <select id="member_list" size="8" style="width:400px;"></select>
+                    <select multiple name="member_list" id="member_list" size="8" style="width:400px;"></select>
                     <input type="button" id="btn2" value="지우기">
                     </td>
 
@@ -119,7 +128,7 @@
             </tr>
         </table>
         <div class="container" align="center">
-    <button class="btn btn-danger" type="submit" id="member_submit" style="color: white;">예약완료</button>
+    <button class="btn btn-danger" type="button" id="member_submit" style="color: white;">예약완료</button>
 </div>
 </form>
 
