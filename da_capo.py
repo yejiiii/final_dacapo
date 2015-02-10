@@ -14,8 +14,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -193,9 +193,7 @@ def timetable_504():
 
 @app.route('/timetable_519')
 def timetable_519():
-    if not g.user:
-        return redirect(url_for('login'))
-    else: json_data = query_db('''select StudentID from Students WHERE StudentID = %s''', [session['user_id']])
+    json_data = query_db('''select StudentID from Students WHERE StudentID = %s''', [session['user_id']])
     # return json.dumps(json_data)
     if not g.user:
         return redirect(url_for('login'))
@@ -213,8 +211,13 @@ def timetable_519():
                 number=number+1;
         # flask.jsonify(**json_data)
         data=json.dumps(json_data)
+
+        seat1=request.cookies.get('seat1')
+        seat2=request.cookies.get('seat2')
+
         room = '519'
-        resp = make_response(render_template('timetable_519.html', room=room,data=data,Start_time=Start_time,End_time=End_time, counter=counter))
+        resp = make_response(render_template('timetable_519.html',room=room,data=data,Start_time=Start_time,End_time=End_time,
+                                             counter=counter,seat1=seat1,seat2=seat2))
         resp.set_cookie('room', value=room)
         return resp
 
@@ -286,20 +289,30 @@ def student_member():
 
         starting=[0 for i in range(count)]
         ending=[0 for i in range(count)]
+
+        seat1 = request.args.get('seat0', '')
+        seat2 = request.args.get('seat1', '')
+
+        day1 = request.args.get('day0', '')
+        print "day"
+        print day1
+        print seat1
+        print seat2
         for i in range(count):
             starting[i]=Start_time[int(request.args.get('time'+unicode(i), ''))]
             ending[i]=End_time[int(request.args.get('time'+unicode(i), ''))]
 
-        room1 = request.args.get('room0', '')
-        room2 = request.args.get('room1', '')
         memory=''
         for i in range(count):
             memory=memory+starting[i]+'~'+ending[i]
 
         resp = make_response(render_template('student_member.html', memory=memory))
         resp.set_cookie('memory', value=memory)
+        resp.set_cookie('seat1', value=seat1)
+        resp.set_cookie('seat2', value=seat2)
         return resp
         memory=request.cookies.get('memory')
+
 
     return render_template('student_member.html',memory=memory)
 
@@ -324,11 +337,8 @@ def member():
         reason= request.form.getlist('reason')
         #reason=request.form['Reason']
 
-        print "Hello"
-        print member
         for i in member:
             g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, i])
-        print "Hello"
 
         status='wait'
         g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Reason, Time) values (%s, %s, %s, %s, %s, %s)''', [id, object, room, status, reason, memory])

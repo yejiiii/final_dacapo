@@ -7,6 +7,8 @@
 {% block optional_javascript %}
 <script type="text/javascript">
     {% if data %}
+
+        alert({{seat1}});
         jQuery.fn.addHidden = function (name, value) {
             return this.each(function () {
                 var input = $("<input>").attr("type", "hidden").attr("name", name).val(value);
@@ -100,8 +102,9 @@
                 $("#submit_time_table").addHidden('time'+i,time_reservation[i]);
             }
             for (var i = 0; i<class_reservation.length; i++){
-                $("#submit_time_table").addHidden('room'+i,class_reservation[i]);
+                $("#submit_time_table").addHidden('seat'+i,class_reservation[i]);
             }
+            $("#submit_time_table").addHidden('day0',remember_thing[0]);
             $("#submit_time_table").submit();
         }
         );
@@ -136,7 +139,7 @@
             <tr>
                 <th>{{Start_time[i]}}~{{End_time[i]}}</th>
                 {% for j in range(5) %}
-                <td col id={{counter[i][j]}} name={{i}}>{{counter[i][j]}}</td>
+                    <td col id={{counter[i][j]}} name={{i}}>{{counter[i][j]}}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
