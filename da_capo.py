@@ -243,10 +243,15 @@ def finish_reservation():
 
     id=session['user_id']
     reservation = query_db('''select * from Reservation where StudentID = %s''', [id], one=True)
-    reservationmember = query_db('''select * from ReservationMember where LeaderNumber = %s''', [id], one=True)
+    reservationmember = query_db('''select MemberName from ReservationMember where LeaderNumber = %s''', [id])
+
+    member=''
+    for i in reservationmember:
+        member +=  i['MemberName'] + "\n"
+
     time= reservation['Time']
     object = reservation['Object']
-    #member = reservationmember['MemberName']
+
     room=reservation['RoomNumber']
     status=reservation['Status']
 
@@ -324,8 +329,7 @@ def member():
         print "Hello"
 
         status='wait'
-        num='1'
-        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number, Reason, Time) values (%s, %s, %s, %s, %s, %s, %s)''', [id, object, room, status, num, reason, memory])
+        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Reason, Time) values (%s, %s, %s, %s, %s, %s)''', [id, object, room, status, reason, memory])
 
     return redirect(url_for('finish_reservation'))
 
