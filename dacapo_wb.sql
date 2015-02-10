@@ -10,7 +10,7 @@ CREATE TABLE `Master` (
   PRIMARY KEY (`Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 CREATE TABLE `Reservation` (
-  `Number` int(11) NULL,
+  `Number` int(11) NULL AUTO_INCREMENT,
   `StudentID` int(11) NULL,
   `Date` date  DEFAULT NULL,
   `StartTime` varchar DEFAULT NULL,
@@ -19,6 +19,7 @@ CREATE TABLE `Reservation` (
   `Object` varchar(45) DEFAULT NULL,
   `MasterReason` varchar(45) DEFAULT NULL,
   `RoomNumber` varchar(45) NULL,
+   PRIMARY KEY (`Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ReservationLeader` (
@@ -29,7 +30,7 @@ CREATE TABLE `ReservationLeader` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ReservationMember` (
-  `Number` int(11) NOT NULL,
+  `Number` int(11) NOT NULL AUTO_INCREMENT,
   `LeaderNumber` int(11) NOT NULL,
   `MemberID` int(11) NOT NULL,
   `MemberName` varchar(45) NOT NULL,
