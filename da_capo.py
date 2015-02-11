@@ -4,6 +4,7 @@ from flask.ext.mysql import MySQL
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
 import datetime
+from datetime import timedelta
 
 
 # configuration
@@ -14,8 +15,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -158,6 +159,7 @@ def information():
 
 @app.route('/timetable_504')
 def timetable_504():
+    date=datetime.date.today()
     json_data = query_db('''select StudentID from Students WHERE StudentID = %s''', [session['user_id']])
     # return json.dumps(json_data)
     if not g.user:
@@ -177,7 +179,7 @@ def timetable_504():
         # flask.jsonify(**json_data)
         data=json.dumps(json_data)
         room = '504'
-        resp = make_response(render_template('timetable_504.html', room=room,data=data,Start_time=Start_time,End_time=End_time, counter=counter))
+        resp = make_response(render_template('timetable_504.html',date=date, room=room,data=data,Start_time=Start_time,End_time=End_time, counter=counter))
         resp.set_cookie('room', value=room)
         return resp
 
@@ -193,6 +195,7 @@ def timetable_504():
 
 @app.route('/timetable_519')
 def timetable_519():
+    date=datetime.date.today()
     json_data = query_db('''select StudentID from Students WHERE StudentID = %s''', [session['user_id']])
     # return json.dumps(json_data)
     if not g.user:
@@ -214,9 +217,8 @@ def timetable_519():
 
         seat1=request.cookies.get('seat1')
         seat2=request.cookies.get('seat2')
-
         room = '519'
-        resp = make_response(render_template('timetable_519.html',room=room,data=data,Start_time=Start_time,End_time=End_time,
+        resp = make_response(render_template('timetable_519.html',date=date,room=room,data=data,Start_time=Start_time,End_time=End_time,
                                              counter=counter,seat1=seat1,seat2=seat2))
         resp.set_cookie('room', value=room)
         return resp
@@ -239,7 +241,18 @@ def checkinformation():
 def selectlist():
     if not g.user:
         return redirect(url_for('login'))
+    id=session['user_id']
+    reservation = query_db('''select RoomNumber, Date, Time from Reservation where StudentID = %s''', [id], one=False)
+    print (reservation)
+
     return render_template('selectlist.html')
+
+@app.route('/inputlist')
+def inputlist():
+    id=session['user_id']
+    json_data= query_db('''select * from Reservation where StudentID = %s''', [id], one=False)
+    return json.dumps(json_data)
+
 
 @app.route('/finish')
 def finish_reservation():
@@ -259,8 +272,8 @@ def finish_reservation():
 
     room=reservation['RoomNumber']
     status=reservation['Status']
-
-    return render_template('finish_reservation.html', room=room,object=object, member=member, time=time, status=status)
+    date=reservation['Date']
+    return render_template('finish_reservation.html', room=room,object=object, member=member, time=time, status=status, date=date)
 
 
 
@@ -294,6 +307,12 @@ def student_member():
         seat2 = request.args.get('seat1', '')
 
         day1 = request.args.get('day0', '')
+        date = datetime.date.today()
+        date_week = date.isoweekday()
+        i = int(day1)-(date_week)
+        reservation_date=str(date+timedelta(days=i))
+        print reservation_date
+
         print "day"
         print day1
         print seat1
@@ -306,15 +325,16 @@ def student_member():
         for i in range(count):
             memory=memory+starting[i]+'~'+ending[i]
 
-        resp = make_response(render_template('student_member.html', memory=memory))
+        resp = make_response(render_template('student_member.html', memory=memory, reservation_date=reservation_date))
         resp.set_cookie('memory', value=memory)
+        resp.set_cookie('reservation_date', value=reservation_date)
         resp.set_cookie('seat1', value=seat1)
         resp.set_cookie('seat2', value=seat2)
         return resp
         memory=request.cookies.get('memory')
 
 
-    return render_template('student_member.html',memory=memory)
+    return render_template('student_member.html',memory=memory, reservation_date=reservation_date)
 
 @app.route('/mem')
 def mem():
@@ -335,13 +355,13 @@ def member():
         member= request.form.getlist('member_list')
         object = request.form.getlist('mymultiselect')
         reason= request.form.getlist('reason')
-        #reason=request.form['Reason']
+        reservation_date=request.cookies.get('reservation_date')
 
         for i in member:
             g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, i])
 
         status='wait'
-        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Reason, Time) values (%s, %s, %s, %s, %s, %s)''', [id, object, room, status, reason, memory])
+        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Reason, Time, Date) values (%s, %s, %s, %s, %s, %s, %s)''', [id, object, room, status, reason, memory, reservation_date])
 
     return redirect(url_for('finish_reservation'))
 
@@ -364,6 +384,7 @@ def check_password():
         error = 'please input id'
     elif not request.form['username']:
         error = 'please input name'
+
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

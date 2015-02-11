@@ -38,13 +38,47 @@
     function page_back(){
     history.go(-1)();
     }
-		</script>
+
+var editor; // use a global for the submit and return data rendering in the examples
+
+
+$.getJSON('/inputlist',
+function(json_data){
+    console.log(json_data);
+});
+
+$(document).ready(function () {
+    $.getJSON('/inputlist', function (json_data) {
+        var tr;
+        for (var i = 0; i < json_data.length; i++) {
+            tr = $('<tr/>');
+            tr.append("<td>" + json_data[i].RoomNumber + "</td>");
+            tr.append("<td>" + json_data[i].Date + "</td>");
+            tr.append("<td>" + json_data[i].Time + "</td>");
+            $('table').append(tr);
+        }
+    });
+});
+</script>
 
 {% endblock %}
 
 {% block content %}
 
 <span style="line-height: 200px"><br></span>
+<table data-toggle="table" data-url="inputlist" data-cache="false" id="table" name="table"
+       class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <td data-field="RoomNumber">Room</td>
+        <td data-field="Date">Date</td>
+        <td data-field="Time" >Time</td>
+    </tr>
+    </thead>
+</table>
+
+
+
 <table align="center">
     <tr>
         <th>강의실</th>
@@ -64,6 +98,32 @@
         <td>15:00-17:00</td>
         <td><p><a href="#"><span class="glyphicon glyphicon-hand-right"></span></a></p></td>
     </tr>
+    <tr>
+        <td>519호</td>
+        <td>2015-03-03 Mon</td>
+        <td>13:00-15:00</td>
+        <td><p><a href="checkinformation"><span class="glyphicon glyphicon-hand-right"></span></a></p></td>
+    </tr>
+    <tr>
+        <td>519호</td>
+        <td>2015-03-03 Mon</td>
+        <td>13:00-15:00</td>
+        <td><p><a href="checkinformation"><span class="glyphicon glyphicon-hand-right"></span></a></p></td>
+    </tr>
+    <tr>
+        <td>519호</td>
+        <td>2015-03-03 Mon</td>
+        <td>13:00-15:00</td>
+        <td><p><a href="checkinformation"><span class="glyphicon glyphicon-hand-right"></span></a></p></td>
+    </tr>
+</table>
+<table data-toggle="table" data-url="/inputlist" data-cache="false" data-height="299">
+    <tr>강의실 예약날짜 예약시간
+        <th data-field="Date" data-halign="center" data-align="center">Date</th>
+        <th data-field="RoomNumber" data-halign="center" data-align="center">Room</th>
+        <th data-field="Time" data-halign="center" data-align="right">Time</th>
+    </tr>
+    </thead>
 </table>
 
 <span style="line-height: 150px"><br></span>
