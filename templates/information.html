@@ -4,7 +4,30 @@
 {% block title %} login {% endblock %}
 
 {% block optional_javascript %}
+<script>
+$( document ).ready(function() {
 
+        $('#submit_button').click(function() {
+            var passwd = $("#passwd").val()
+            var re_pw = $("#re_pw").val()
+            alert ("hi")
+            if(! passwd != re_pw) {
+            }
+                alert("비밀번호가 일치하지 않습니다.");
+                return;
+                }
+            $.ajax({
+                url:'/change_passwd',
+                dataType: "json",
+                data:info_student,
+                success: function (text)
+                        {
+                            alert (text["text"]);
+                            $('#basicModal').modal('hide');
+                        }
+                    });
+                });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -23,7 +46,7 @@
             <b>이용 가능 시간</b> : <strong style="color:red ";>09:00 ~ 18:00 (학기 중 평일만 이용 가능)</strong><br>
             <span style="line-height: 10px"><br></span>
             <b>이용 방법</b> : <strong style="color:red ";>하루 한시간 단위로 최대 두시간 예약 가능<br>
-            &emsp;&emsp;&emsp;&emsp;&emsp;하루 전까지 예약, 예약한 시간의 한시간 전까지 예약 취소 가능<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;한 주의 예약만 가능<br>
             &emsp;&emsp;&emsp;&emsp;&emsp;예약은 한 날짜의 한 번만 가능</strong>
             </alticle>
         </div>

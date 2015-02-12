@@ -1,9 +1,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='timetable.css')}}">
-
 {% extends "base_timetable.html" %}
-
 {% block title %} login {% endblock %}
-
 {% block optional_javascript %}
 <script type="text/javascript">
     {% if data %}
@@ -20,6 +17,8 @@
          if ({{g.user['StudentID']}} != '123456789'){
             $( function() {
                     $('td').click( function() {
+                        $( "#touch_no").unbind( "click" );
+                        $( "#touch_no").css( 'background-color','yellow' );
                         var class_room=$(this).attr('id');
                         var change=$(this).attr('name');
                         var remember=$(this).index();
@@ -54,6 +53,7 @@
                                 removeItem(time_reservation, change);
                             }
                             else{
+                                $( "#touch_no").css( 'background-color','yellow' );
                                 $('td').removeAttr('style');
                                 number=0;
                                 time_reservation=[];
@@ -100,25 +100,22 @@
                 $("#submit_time_table").addHidden('time'+i,time_reservation[i]);
             }
             for (var i = 0; i<class_reservation.length; i++){
-                $("#submit_time_table").addHidden('room'+i,class_reservation[i]);
+                $("#submit_time_table").addHidden('seat'+i,class_reservation[i]);
             }
+            $("#submit_time_table").addHidden('day0',remember_thing[0]);
             $("#submit_time_table").submit();
         }
         );
     }
  );
 </script>
-
 <style type="text/css">
     .main td,th{
     text-align: center;
     }
 </style>
-
 {% endblock %}
-
 {% block content %}
-
 <div class="container">
     <div class="col-md-1"></div>
     <div class="col-md-12">
@@ -131,12 +128,15 @@
                 <th>Thu</th>
                 <th>Fri</th>
             </tr>
-
             {% for i in range(14)%}
             <tr>
                 <th>{{Start_time[i]}}~{{End_time[i]}}</th>
                 {% for j in range(5) %}
-                <td col id={{counter[i][j]}} name={{i}}>{{counter[i][j]}}</td>
+                    {% if (counter[i][j]|int == seat1|int ) %}
+                        <td id="touch_no" style="background-color: yellow">{{counter[i][j]}}</td>
+                    {% else %}
+                        <td col id={{counter[i][j]}} name={{i}}>{{counter[i][j]}}</td>
+                    {% endif %}
                 {% endfor %}
             </tr>
             {% endfor %}
@@ -144,8 +144,6 @@
     </div>
     <div class="col-md-1"></div>
 </div>
-
-
 <form action="/student_member" method="GET" id="submit_time_table">
     <div class="container" align="center">
         <button type="button" class="btn btn-danger" id="submit_button">예약완료</a></button>
