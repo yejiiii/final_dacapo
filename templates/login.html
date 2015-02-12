@@ -5,11 +5,56 @@
 
 {% block optional_javascript %}
 <script>
-        $('#myModal').on('shown.bs.modal', function () {
+
+    $( document ).ready(function() {
+         $('#myModal').on('shown.bs.modal', function () {
             $('#myInput').focus()})
-        function page_back(){
-            history.go(-1)();}
-    </script>
+                function page_back(){
+                history.go(-1)();}
+            $('#submit_button').click( function() {
+                source: function (request, response)
+                {
+                    $.ajax(
+                    {
+                        url:'/check_password',
+                        dataType: "json",
+                        data:
+                        {
+                            term: request.term,
+                        },
+                        success: function (data)
+                        {
+                            response($.map(data, function(item) {
+                                return {
+                                    label: item['StudentID'] + " " + item['UserEmail'],
+                                    studentID: item['StudentID'],
+                                    studentName: item['StudentName']
+                                };
+                            }));
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui)
+                {
+                    var data = "<option value='"+ui.item.studentID+"'>"+ui.item.label+"</option>"
+                    $('#member_list').append(data);
+                    $("#submit_button").click(function(){
+                        $("#member_list").find('option:selected').remove();
+                    });
+                },
+                open: function() {
+                    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+                },
+                close: function() {
+                    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+      }
+             });
+         });
+            });
+         }
+ );
+</script>
 {% endblock %}
 
 {% block content %}
@@ -64,34 +109,6 @@
                     <button type="button" class="btn btn-primary">Ok</button>
                 </div>
             </div>
-            <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> X </button>
-                            <h4 class="modal-title" id="myModalLabel">비밀번호 찾기</h4>
-                        </div>
-                        <div class="modal-body" style="text-align: left">
-                            <div class="container" style="width: 500px">
-                                <div class="form-group" >
-                                    <label for="modalid">Student ID:</label>
-                                    <input type="text" class="form-control" id="modalid" placeholder="Enter ID" name="modalid">
-                                </div>
-                                <div class="form-group">
-                                    <label for="modalemail" >E-mail:</label>
-                                    <input type="email" class="form-control" id="modalemail" placeholder="Enter email" name="modalemail">
-                                </div>
-                                <p style="font-size:13px; color: blue;"> 이메일과 아이디가 일치할 경우, 비밀먼호 찾기를 누르면 비밀번호가 전송됩니다.</p>
-                                {{m_error}}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default " href="checkpassword" style="width:120px; button-align:left;">비밀번호 찾기</button>
-                            <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="divider"></div>
             <button type="submit" class="btn btn-danger">로그인</button>
@@ -99,6 +116,37 @@
             <button type="button" class="btn btn-danger"><a href="register" style="color: white;">회원가입</a></button>
         </div>
         <div class="col-md-2"></div>
+    </div>
+</form>
+<form action="/check_password" method="GET" id="submit_email">
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> X </button>
+                    <h4 class="modal-title" id="myModalLabel">비밀번호 찾기</h4>
+                </div>
+
+                <div class="modal-body" style="text-align: left">
+                    <div class="container" style="width: 500px">
+                        <div class="form-group" >
+                            <label for="modal_id">Student ID:</label>
+                            <input type="text" class="form-control" id="modal_id" placeholder="Enter ID" name="modal_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="modal_email" >E-mail:</label>
+                            <input type="email" class="form-control" id="modal_email" placeholder="Enter email" name="modal_email">
+                        </div>
+                            <p style="font-size:13px; color: blue;"> 이메일과 아이디가 일치할 경우, 비밀먼호 찾기를 누르면 비밀번호가 전송됩니다.</p>
+                        </div>
+                        <div id="wines"> </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default " id="submit_button" type="button" style="width:120px; button-align:left;">비밀번호 찾기</button>
+                    <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 <span style="line-height: 70px"><br></span>

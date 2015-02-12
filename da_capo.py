@@ -373,17 +373,17 @@ def input_member():
 
     return Response(json.dumps(json_data),mimetype='application/json')
 
-@app.route('/check_password', methods=['GET'])
+@app.route('/check_password')
 def check_password():
-    id=request.form[modalid]
-    email=request.form[modalemail]
+    data = request.args.get('term', '')
+    print data
+    json_data = query_db('''select * from User WHERE StudentID like %s ''', [data+"%"])
 
-    user = query_db('''select * from User where StudentID = %s''', [id], one=True)
+    return Response(json.dumps(json_data),mimetype='application/json')
 
-    if not request.form['id']:
-        error = 'please input id'
-    elif not request.form['username']:
-        error = 'please input name'
+
+
+
 
 
 if __name__ == "__main__":
