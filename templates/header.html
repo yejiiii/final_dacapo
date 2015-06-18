@@ -7,6 +7,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{url_for('information')}}"><span class="glyphicon glyphicon-home" id="icon_color"></span>&nbsp;이용안내</a></li>
               {% if session['user_id'] %}
+                <li><a href="change_pwd"><span class="glyphicon glyphicon-pencil" id="icon_color"></span>&nbsp;비밀번호 수정</a></li>
                 <li><a href="{{url_for('logout_process')}}"><span class="glyphicon glyphicon-off" id="icon_color"></span>&nbsp;로그아웃</a></li>
 
                 {% else %}

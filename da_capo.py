@@ -1,10 +1,34 @@
 # -*- coding: utf-8 -*-
+
 from flask import Flask, render_template, request, make_response, url_for, session, g, redirect, Response
 from flask.ext.mysql import MySQL
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
 import datetime
 from datetime import timedelta
+import os, smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEBase import MIMEBase
+from email.MIMEText import MIMEText
+from email import Encoders
+from random import randint
+
+def send_gmail(to, subject, text):
+    msg=MIMEMultipart()
+    msg['From']=gmail_user
+    msg['To']=to
+    msg['Subject']=subject
+    msg.attach(MIMEText(text))
+    part=MIMEBase('application','octet-stream')
+    Encoders.encode_base64(part)
+
+    mailServer=smtplib.SMTP("smtp.gmail.com",587)
+    mailServer.ehlo()
+    mailServer.starttls()
+    mailServer.ehlo()
+    mailServer.login(gmail_user,gmail_pwd)
+    mailServer.sendmail(gmail_user, to, msg.as_string())
+    mailServer.close()
 
 
 # configuration
@@ -241,16 +265,20 @@ def checkinformation():
 def selectlist():
     if not g.user:
         return redirect(url_for('login'))
-    id=session['user_id']
-    reservation = query_db('''select RoomNumber, Date, Time from Reservation where StudentID = %s''', [id], one=False)
-    print (reservation)
+    #id=session['user_id']
+    #reservation = query_db('''select * from Reservation where StudentID = %s''', [id], one=False)
+    #r_date= reservation[Date]
+    #StudentMember = query_db('''select * from ReservationMember where LeaderNumber = %s AND Date = %s''', [id, r_date], one=False)
+    #print (reservation)
 
     return render_template('selectlist.html')
 
 @app.route('/inputlist')
 def inputlist():
     id=session['user_id']
-    json_data= query_db('''select * from Reservation where StudentID = %s''', [id], one=False)
+    json_data=query_db('''select * from Reservation where StudentID = %s''', [id], one=False)
+    #r_date= reservation[Date]
+    #StudentMember = query_db('''select * from ReservationMember where LeaderNumber = %s AND Date = %s''', [id, r_date], one=False)
     return json.dumps(json_data)
 
 
@@ -258,10 +286,10 @@ def inputlist():
 def finish_reservation():
     if not g.user:
         return redirect(url_for('login'))
-
+    reservation_date=request.cookies.get('reservation_date')
     id=session['user_id']
-    reservation = query_db('''select * from Reservation where StudentID = %s''', [id], one=True)
-    reservationmember = query_db('''select MemberName from ReservationMember where LeaderNumber = %s''', [id])
+    reservation = query_db('''select * from Reservation where StudentID = %s AND Date = %s''', [id, reservation_date], one=True)
+    reservationmember = query_db('''select MemberName from ReservationMember where LeaderNumber = %s AND Date = %s''', [id, reservation_date])
 
     member=''
     for i in reservationmember:
@@ -358,7 +386,7 @@ def member():
         reservation_date=request.cookies.get('reservation_date')
 
         for i in member:
-            g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, i])
+            g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName, Date) values (%s, %s, %s)''', [id, i, reservation_date])
 
         status='wait'
         g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Reason, Time, Date) values (%s, %s, %s, %s, %s, %s, %s)''', [id, object, room, status, reason, memory, reservation_date])
@@ -375,16 +403,90 @@ def input_member():
 
 @app.route('/check_password')
 def check_password():
-    data = request.args.get('term', '')
-    print data
-    json_data = query_db('''select * from User WHERE StudentID like %s ''', [data+"%"])
 
-    return Response(json.dumps(json_data),mimetype='application/json')
+    def send_gmail(to, subject, text):
+        msg=MIMEMultipart()
+        msg['From']=gmail_user
+        msg['To']=to
+        msg['Subject']=subject
+        msg.attach(MIMEText(text))
+        part=MIMEBase('application','octet-stream')
+        Encoders.encode_base64(part)
+
+        mailServer=smtplib.SMTP("smtp.gmail.com",587)
+        mailServer.ehlo()
+        mailServer.starttls()
+        mailServer.ehlo()
+        mailServer.login(gmail_user,gmail_pwd)
+        mailServer.sendmail(gmail_user, to, msg.as_string())
+        mailServer.close()
+
+
+    id = request.args.get('modal_id')
+    email = request.args.get('modal_email')
+    json_data = query_db('''select * from User WHERE StudentID = %s AND UserEmail = %s''', [id, email], one=True)
+    # password = json_data['UserPassword']
+
+    if json_data is not None:
+        new_passwd = str(randint(1000000,9999999))
+        print new_passwd
+        hash_new = generate_password_hash(new_passwd)
+        print hash_new
+        g.db.execute('''UPDATE User SET UserPassword = %s WHERE StudentID = %s''', [hash_new, id])
+        if __name__ == "__main__":
+            title="비밀번호를 확인해주세요 -da_capo-"
+            to=(email)
+            gmail_user="l67378810@gmail.com"
+            gmail_pwd="guswn6737"
+            message= id+"password is"+new_passwd+"." +"\n" +"Please change password."
+            send_gmail(to,title,message)
+
+            data=json.dumps({'text': '메일이 발송되었습니다'})
+    else:
+        data=json.dumps({'text': '메일이 발송이 실패하였습니다'})
+
+    return data
+
+@app.route('/change_pwd')
+def change_pwd():
+    return render_template('checkpwd.html')
+
+@app.route('/change', methods=["POST"])
+def change():
+    if request.method == "POST":
+        id=session['user_id']
+
+        passwd = generate_password_hash(request.form['passwd'])
+        newpwd=request.form['newpwd']
+        repwd=request.form['repwd']
+        h_newpwd=generate_password_hash(newpwd)
+
+        user = query_db('''select * from User where StudentID = %s''', [id], one=True)
+
+        if not passwd:
+            error = 'please input value'
+            return render_template('checkpwd.html', error=error)
+        elif not request.form['newpwd']:
+            error = 'please input value'
+            return render_template('checkpwd.html', error=error)
+        elif not request.form['repwd']:
+            error = 'please input value'
+            return render_template('checkpwd.html', error=error)
+        elif not passwd == user['UserPassword']:
+            error = 'Invalid your password'
+        elif newpwd != repwd:
+            error = 'please retype new password correctly'
+            return render_template('checkpwd.html', error=error)
+        elif newpwd == repwd:
+            g.db.execute('''UPDATE User SET UserPassword = %s WHERE StudentID = %s''', [h_newpwd, id])
+            return redirect(url_for('logout_process'))
 
 
 
-
-
+#date = datetime.date.today()
+#date_week = date.isoweekday()
+#if date_week==0:
+#    g.db.execute('''TRUNCATE TABLE Reservation, ReservationMember''')
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
